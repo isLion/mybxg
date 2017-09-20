@@ -13,9 +13,9 @@
     if(array_key_exists('PATH_INFO',$_SERVER)){
         //PATH_INFO属性存在
         //获取请求路径
-        $path=$_SERVER['PATH_INFO'];
+        $path=$_SERVER['PATH_INFO'];//main/index
         //去掉第一个斜杠
-        $str=substr($path,1);
+        $str=substr($path,1);//main/index
         //字符串分割 和js中split方法很像
         $ret=explode('/',$str);
         if(count($ret)==2){
