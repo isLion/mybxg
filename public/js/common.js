@@ -1,4 +1,4 @@
-define(['jquery','cookie'], function ($) {
+define(['jquery', 'template', 'cookie'], function ($, template) {
 
 	// NProgress.start();
 
@@ -24,7 +24,7 @@ define(['jquery','cookie'], function ($) {
 	})
 	//检测用户是否登录
 	var flag = $.cookie('PHPSESSID');
-	if (!flag&&location.pathname!='/main/login') {
+	if (!flag && location.pathname != '/main/login') {
 		//如果cookie不存在 跳转到登录页
 		location.href = '/main/login'
 	}
@@ -33,6 +33,10 @@ define(['jquery','cookie'], function ($) {
 	var loginInfo = $.cookie('loginInfo')
 	loginInfo = loginInfo && JSON.parse(loginInfo)
 	//设置用户的头像信息
-	$('.aside .profile img').attr('src', loginInfo.tc_avatar)
-	$('.aside .profile h4').html(loginInfo.tc_name)
+	// $('.aside .profile img').attr('src', loginInfo.tc_avatar)
+	// $('.aside .profile h4').html(loginInfo.tc_name)
+	var tpl = '<div class="avatar img-circle">< img src= "{{tc_avatar}}" ></div ><h4>{{tc_name}}</h4>';
+	var html = template.render(tpl, loginInfo)
+	$('.aside .profile').html(html)
+
 })
