@@ -1,6 +1,7 @@
 define([
     'jquery',
-    'template'
+    'template',
+    'bootstrap'
 ], function ($, template) {
     //调用接口 获取所有讲师数据
     $.ajax({
@@ -14,12 +15,12 @@ define([
             $('#teacherInfo').html(html)
 
             //启用注销功能
-            $('.eod').on('click', function () {
+            $('.eod').click(function () {
                 var that = this
                 var td = $(this).closest('td')
                 var tcId = td.attr('data-tcId')
                 var status = td.attr('data-status')
-                console.log(status)
+                // console.log(status)
                 $.ajax({
                     type: 'post',
                     url: '/api/teacher/handle',
@@ -29,7 +30,7 @@ define([
                     },
                     dataType: 'json',
                     success: function (data) {
-                        console.log(data.result.tc_status)
+                        // console.log(data.result.tc_status)
                         if (data.code == 200) {
                             td.attr('data-status', data.result.tc_status)
                             if (data.result.tc_status == 0) {
@@ -38,6 +39,23 @@ define([
                                 $(that).text('启用')
                             }
                         }
+                    }
+                })
+            })
+
+            //查看讲师
+            $('.preview').click(function () {
+                var td = $(this).closest('td')
+                var tcId = td.attr('data-tcId')
+                $.ajax({
+                    type: 'get',
+                    url: '/api/teacher/view',
+                    data: { tc_id: tcId },
+                    dataType: 'json',
+                    success: function (data) {
+                        var html = template('modalTpl', data.result)
+                        $('#modalInfo').html(html)
+                        $('#teacherModal').modal()
                     }
                 })
             })
