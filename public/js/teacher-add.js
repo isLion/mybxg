@@ -1,7 +1,9 @@
 define([
     'jquery',
     'template',
-    'util'
+    'util',
+    'datepicker',
+    'language'
 ], function ($, template, util) {
     var tcId = util.qs('tc_id')
     if (tcId) {
