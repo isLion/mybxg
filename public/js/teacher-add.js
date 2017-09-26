@@ -3,7 +3,9 @@ define([
     'template',
     'util',
     'datepicker',
-    'language'
+    'language',
+    'validate',
+    'form'
 ], function ($, template, util) {
     var tcId = util.qs('tc_id')
     if (tcId) {
@@ -31,9 +33,40 @@ define([
         submitForm('/api/teacher/add')
     }
 
+    function submitForm(url) {
+        $('#teacherForm').validate({
+            sendForm: false,
+            valid: function () {//验证全通过  继续
+                $(this).ajaxSubmit({//提交插件
+                    type: 'post',
+                    url: url,
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.code == 200) {
+                            location.href = '/teacher/list'
+                        }
+                    }
+                })
+            },
+            description: {//提示信息
+                tcName: {
+                    required: '用户名不能为空'//提示信息
+                },
+                tcPass: {
+                    required: '密码不能为空',
+                    pattern: '密码必须6位数字'//格式不对
+                },
+                tcJoinDate: {
+                    required: '日期不能为空'
+                }
+            }
+        })
+    }
+
+
 
     //封装  ！！！ 实现表单提交
-    function submitForm(url) {
+    /* function submitForm(url) {
         $('#teacherBtn').click(function () {
             $.ajax({
                 type: 'post',
@@ -47,7 +80,7 @@ define([
                 }
             })
         })
-    }
+    } */
 
 
 });
